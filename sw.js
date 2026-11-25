@@ -1,4 +1,5 @@
-const CACHE = "monke-island-v7";
+
+const CACHE = "monke-island-v9";
 
 const FILES = [
   "./",
