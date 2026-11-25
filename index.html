@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
 <meta name="theme-color" content="#163d35">
 <link rel="manifest" href="./manifest.json">
 <title>Monke Island</title>
+
 <style>
 :root{--panel:#1b4439;--cream:#fff3d7;--lime:#c8f27b;--muted:#b8d2bd}
 *{box-sizing:border-box}
@@ -15,29 +17,39 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
 .stats{display:flex;gap:8px;flex-wrap:wrap}
 .pill{background:#244e41;border:1px solid #47745c;border-radius:99px;padding:8px 12px;font-weight:750}
 main{max-width:900px;margin:auto;padding:0 16px 40px}
+
 .island{position:relative;overflow:hidden;border:3px solid #46785c;border-radius:28px;background:linear-gradient(#8ed7cb 0 38%,#3b9d76 38% 61%,#267452 61%);height:300px;margin:8px 0 20px;box-shadow:0 12px 0 #09211e;transition:background .5s}
 .island.forest{background:linear-gradient(#76c5b0 0 38%,#28764e 38% 61%,#164c36 61%)}
 .island.village{background:linear-gradient(#9ac9dc 0 38%,#65a76a 38% 61%,#387b45 61%)}
 .island.cove{background:linear-gradient(#8adbe8 0 38%,#4c9fc0 38% 61%,#276b91 61%)}
 .island.kingdom{background:linear-gradient(#b2a2d9 0 38%,#7862a6 38% 61%,#44376d 61%)}
+
 .sun{position:absolute;right:30px;top:24px;width:50px;height:50px;background:#ffe38c;border-radius:50%}
-.cloud{position:absolute;font-size:35px}.c1{top:25px;left:25px}.c2{top:65px;right:105px}
+.cloud{position:absolute;font-size:35px}
+.c1{top:25px;left:25px}
+.c2{top:65px;right:105px}
 .land{position:absolute;bottom:-65px;left:7.5%;width:85%;height:190px;border-radius:50%;background:#a5d66d;border:12px solid #63ad62}
 .forest .land{background:#5caa55;border-color:#367b43}
 .village .land{background:#b2c979;border-color:#779c55}
 .cove .land{background:#70c9c9;border-color:#398e9e}
 .kingdom .land{background:#a69ad1;border-color:#7465a8}
-.tree{position:absolute;bottom:80px;font-size:58px}.t1{left:15%}.t2{right:15%;bottom:95px}
+.tree{position:absolute;bottom:80px;font-size:58px}
+.t1{left:15%}
+.t2{right:15%;bottom:95px}
 .hut{position:absolute;bottom:65px;left:43%;font-size:58px}
 .monkeys{position:absolute;bottom:48px;left:37%;font-size:32px;letter-spacing:3px}
 .island-label{position:absolute;top:12px;left:16px;background:#164238cc;padding:7px 12px;border-radius:14px;font-weight:800}
 .decoration{position:absolute;font-size:35px;z-index:2}
+
 section{background:var(--panel);border:1px solid #3d6c55;border-radius:22px;padding:17px;margin:14px 0}
 h2{font-size:1.12rem;margin:0 0 13px}
 .habit{display:flex;align-items:center;gap:10px;background:#245246;padding:12px;border-radius:15px;margin:8px 0}
-.habit .emoji{font-size:25px}.habit .name{flex:1;font-weight:700}
+.habit .emoji{font-size:25px}
+.habit .name{flex:1;font-weight:700}
 .habit small{display:block;color:var(--muted)}
-.done{background:#426a43;opacity:.7}.done .name{text-decoration:line-through}
+.done{background:#426a43;opacity:.7}
+.done .name{text-decoration:line-through}
+
 button,input{font:inherit}
 button{border:0;border-radius:12px;padding:10px 13px;font-weight:800;cursor:pointer;background:var(--lime);color:#183b2d}
 button:disabled{opacity:.4;cursor:default}
@@ -46,7 +58,8 @@ input{width:100%;border:1px solid #4b795e;background:#12372e;color:white;border-
 .add{display:flex;gap:8px;margin-top:12px}
 .shop{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
 .item{background:#245246;border-radius:15px;padding:12px;text-align:center}
-.item .art{font-size:38px}.item p{font-size:.86rem;color:var(--muted);min-height:34px}
+.item .art{font-size:38px}
+.item p{font-size:.86rem;color:var(--muted);min-height:34px}
 .item button{width:100%}
 .bar{height:15px;background:#12372e;border-radius:20px;overflow:hidden;margin:12px 0}
 .fill{height:100%;background:var(--lime);border-radius:20px;transition:width .3s}
@@ -54,11 +67,36 @@ input{width:100%;border:1px solid #4b795e;background:#12372e;color:white;border-
 .area .art{font-size:32px}
 .area.locked{opacity:.55}
 .note{font-size:.8rem;color:var(--muted);text-align:center;margin-top:18px}
-@media(max-width:480px){.island{height:250px}.tree{font-size:48px}.hut{font-size:48px}.monkeys{font-size:26px}}
+
+/* Banana reward animation */
+.reward{
+position:fixed;
+z-index:100;
+pointer-events:none;
+font-size:28px;
+font-weight:900;
+animation:bananaFly 1.3s ease-out forwards;
+}
+@keyframes bananaFly{
+0%{opacity:0;transform:translateY(20px) scale(.5)}
+20%{opacity:1;transform:translateY(0) scale(1.2)}
+100%{opacity:0;transform:translateY(-100px) scale(1)}
+}
+.habit-pop{animation:habitPop .35s ease}
+@keyframes habitPop{
+50%{transform:scale(1.04)}
+}
+
+@media(max-width:480px){
+.island{height:250px}
+.tree{font-size:48px}
+.hut{font-size:48px}
+.monkeys{font-size:26px}
+}
 </style>
 </head>
-<body>
 
+<body>
 <header>
 <div class="brand">🐒 Monke Island</div>
 <div class="stats">
@@ -165,6 +203,16 @@ function currentArea(){
 return [...areas].reverse().find(a=>level()>=a.level)||areas[0];
 }
 
+function showReward(){
+const reward=document.createElement("div");
+reward.className="reward";
+reward.textContent="🍌 +10";
+reward.style.left=(window.innerWidth/2-30)+"px";
+reward.style.top=(window.innerHeight/2)+"px";
+document.body.appendChild(reward);
+setTimeout(()=>reward.remove(),1400);
+}
+
 function render(){
 document.getElementById("bananas").textContent=data.bananas;
 document.getElementById("streak").textContent=data.streak;
@@ -192,7 +240,7 @@ el.innerHTML=`
 <button ${completed?"disabled":""}>${completed?"Done ✓":"Complete +10"}</button>
 <button class="delete">×</button>
 `;
-el.children[2].onclick=()=>complete(h.id);
+el.children[2].onclick=()=>complete(h.id,el);
 el.children[3].onclick=()=>{
 data.habits=data.habits.filter(x=>x.id!==h.id);
 store();render();
@@ -251,7 +299,7 @@ document.getElementById("progress").textContent=
 `You completed ${data.total} habits, earned ${data.xp} XP and unlocked ${data.items.length} island upgrades.`;
 }
 
-function complete(id){
+function complete(id,element){
 let d=today();
 data.done[d] ||= [];
 if(data.done[d].includes(id))return;
@@ -269,10 +317,18 @@ data.lastDay=d;
 }
 
 store();
+showReward();
+
+if(element){
+element.classList.add("habit-pop");
+}
+
 render();
 
 if(level()>oldLevel){
+setTimeout(()=>{
 alert("LEVEL UP! You reached island level "+level()+"!");
+},400);
 }
 }
 
