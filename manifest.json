@@ -1,6 +1,6 @@
 {
-  "name": "Banana Island",
-  "short_name": "Banana Island",
+  "name": "Monke Island",
+  "short_name": "Monke Island",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#102d29",
