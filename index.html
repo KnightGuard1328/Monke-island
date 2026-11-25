@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#163d35">
 <link rel="manifest" href="./manifest.json">
-<title>Banana Island</title>
+<title>Monke Island</title>
 <style>
 :root{--bg:#102d29;--panel:#1b4439;--panel2:#245548;--cream:#fff3d7;--lime:#c8f27b;--gold:#ffd66b;--muted:#b8d2bd}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(#153c35,#0d2825);color:var(--cream);font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
@@ -18,7 +19,7 @@ main{max-width:850px;margin:auto;padding:0 16px 36px}.island{position:relative;o
 .tree{position:absolute;bottom:80px;font-size:62px;filter:drop-shadow(0 5px 2px #164a31)}.t1{left:19%}.t2{right:19%;bottom:96px}.hut{position:absolute;bottom:65px;font-size:65px}.monkeys{position:absolute;bottom:52px;font-size:38px;letter-spacing:4px;text-shadow:0 3px #397447}
 .island-label{position:absolute;top:12px;left:16px;background:#164238cc;padding:7px 12px;border-radius:14px;font-weight:800}
 section{background:var(--panel);border:1px solid #3d6c55;border-radius:22px;padding:17px;margin:14px 0}
-h2{font-size:1.12rem;margin:0 0 13px} .row{display:flex;align-items:center;gap:10px}.row>*{min-width:0}
+h2{font-size:1.12rem;margin:0 0 13px}.row{display:flex;align-items:center;gap:10px}.row>*{min-width:0}
 .habit{display:flex;align-items:center;gap:11px;background:#245246;padding:12px;border-radius:15px;margin:8px 0}.habit .emoji{font-size:25px}.habit .name{flex:1;font-weight:700}.habit small{display:block;color:var(--muted);font-weight:500}.done{background:#426a43;opacity:.7}.done .name{text-decoration:line-through}
 button,input{font:inherit}button{border:0;border-radius:12px;padding:10px 13px;font-weight:800;cursor:pointer;background:var(--lime);color:#183b2d}button:disabled{opacity:.4;cursor:default}.secondary{background:#386655;color:var(--cream)}.delete{background:transparent;color:#d8b6a5;padding:5px}
 input{width:100%;border:1px solid #4b795e;background:#12372e;color:white;border-radius:12px;padding:11px}.add{display:flex;gap:8px;margin-top:12px}.add button{white-space:nowrap}
@@ -28,7 +29,7 @@ input{width:100%;border:1px solid #4b795e;background:#12372e;color:white;border-
 </style>
 </head>
 <body>
-<header><div class="brand">🍌 Banana Island</div><div class="stats"><div class="pill">🍌 <span id="bananas">0</span></div><div class="pill">🔥 <span id="streak">0</span> day streak</div></div></header>
+<header><div class="brand">🐒 Monke Island</div><div class="stats"><div class="pill">🍌 <span id="bananas">0</span></div><div class="pill">🔥 <span id="streak">0</span> day streak</div></div></header>
 <main>
 <div class="island"><div class="sun"></div><div class="cloud c1">☁️</div><div class="cloud c2">☁️</div><div class="island-label">Your island</div><div class="land"></div><div class="tree t1">🌴</div><div class="tree t2">🌴</div><div class="hut">🛖</div><div class="monkeys" id="monkeys">🐒</div></div>
 <section><h2>Today's habits</h2><div id="habitList"></div><div class="add"><input id="habitInput" maxlength="48" placeholder="Add a habit..."><button id="addBtn">Add</button></div><div class="note">Finish a habit to earn 10 bananas</div></section>
@@ -47,7 +48,7 @@ function render(){
  let list=document.getElementById("habitList");list.innerHTML="";
  data.habits.forEach(h=>{let done=data.done[today()]?.includes(h.id);let el=document.createElement("div");el.className="habit"+(done?" done":"");el.innerHTML=`<span class="emoji">${h.emoji||"⭐"}</span><div class="name">${escapeHtml(h.name)}<small>${done?"Completed today":"Daily habit"}</small></div><button ${done?"disabled":""}>${done?"Done ✓":"Complete +10"}</button><button class="delete" title="Remove habit">×</button>`;el.children[2].onclick=()=>complete(h.id);el.children[3].onclick=()=>{data.habits=data.habits.filter(x=>x.id!==h.id);store();render()};list.appendChild(el)});
  let shop=document.getElementById("shop");shop.innerHTML="";items.forEach(it=>{let owned=data.items.includes(it.id);let el=document.createElement("div");el.className="item";el.innerHTML=`<div class="art">${it.emoji}</div><b>${it.name}</b><p>${it.desc}</p><button ${owned||data.bananas<it.cost?"disabled":""}>${owned?"Owned ✓":"🍌 "+it.cost}</button>`;el.querySelector("button").onclick=()=>buy(it);shop.appendChild(el)});
- let extra=data.items.map(id=>items.find(x=>x.id===id)?.emoji).filter(Boolean).join(" ");document.getElementById("monkeys").textContent="🐒".repeat(1+data.items.filter(x=>x==="monkey").length);
+ document.getElementById("monkeys").textContent="🐒".repeat(1+data.items.filter(x=>x==="monkey").length);
  document.querySelector(".island").querySelectorAll(".extra").forEach(x=>x.remove());let island=document.querySelector(".island");if(data.items.includes("flower")){let e=document.createElement("div");e.className="extra";e.style.cssText="position:absolute;bottom:37px;left:43%;font-size:28px";e.textContent="🌺🌼";island.append(e)}if(data.items.includes("boat")){let e=document.createElement("div");e.className="extra";e.style.cssText="position:absolute;bottom:10px;right:12%;font-size:38px";e.textContent="⛵";island.append(e)}if(data.items.includes("castle")){document.querySelector(".hut").textContent="🏰"}
  document.getElementById("progress").textContent=`You completed ${data.total} habits and unlocked ${data.items.length} island upgrades. Keep going to build your paradise!`;
 }
