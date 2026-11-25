@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#163d35">
+<title>Banana Island</title>
+<style>
+:root{--bg:#102d29;--panel:#1b4439;--panel2:#245548;--cream:#fff3d7;--lime:#c8f27b;--gold:#ffd66b;--muted:#b8d2bd}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(#153c35,#0d2825);color:var(--cream);font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px max(18px,calc((100% - 850px)/2));gap:12px;flex-wrap:wrap}
+.brand{font-weight:900;font-size:1.3rem;letter-spacing:.4px}.stats{display:flex;gap:8px}.pill{background:#244e41;border:1px solid #47745c;border-radius:99px;padding:8px 13px;font-weight:750}
+main{max-width:850px;margin:auto;padding:0 16px 36px}.island{position:relative;overflow:hidden;border:3px solid #46785c;border-radius:28px;background:linear-gradient(#8ed7cb 0 38%,#3b9d76 38% 61%,#267452 61%);height:270px;display:flex;align-items:center;justify-content:center;margin:8px 0 18px;box-shadow:0 12px 0 #09211e}
+.sun{position:absolute;right:30px;top:24px;width:50px;height:50px;background:#ffe38c;border-radius:50%;box-shadow:0 0 35px #ffe38c88}
+.cloud{position:absolute;font-size:35px;opacity:.8}.c1{top:25px;left:25px}.c2{top:65px;right:105px}
+.land{position:absolute;bottom:-65px;width:85%;height:190px;border-radius:50%;background:#a5d66d;border:12px solid #63ad62;box-shadow:inset 0 -18px #77bd5e}
+.tree{position:absolute;bottom:80px;font-size:62px;filter:drop-shadow(0 5px 2px #164a31)}.t1{left:19%}.t2{right:19%;bottom:96px}.hut{position:absolute;bottom:65px;font-size:65px}.monkeys{position:absolute;bottom:52px;font-size:38px;letter-spacing:4px;text-shadow:0 3px #397447}
+.island-label{position:absolute;top:12px;left:16px;background:#164238cc;padding:7px 12px;border-radius:14px;font-weight:800}
+section{background:var(--panel);border:1px solid #3d6c55;border-radius:22px;padding:17px;margin:14px 0}
+h2{font-size:1.12rem;margin:0 0 13px} .row{display:flex;align-items:center;gap:10px}.row>*{min-width:0}
+.habit{display:flex;align-items:center;gap:11px;background:#245246;padding:12px;border-radius:15px;margin:8px 0}.habit .emoji{font-size:25px}.habit .name{flex:1;font-weight:700}.habit small{display:block;color:var(--muted);font-weight:500}.done{background:#426a43;opacity:.7}.done .name{text-decoration:line-through}
+button,input{font:inherit}button{border:0;border-radius:12px;padding:10px 13px;font-weight:800;cursor:pointer;background:var(--lime);color:#183b2d}button:disabled{opacity:.4;cursor:default}.secondary{background:#386655;color:var(--cream)}.delete{background:transparent;color:#d8b6a5;padding:5px}
+input{width:100%;border:1px solid #4b795e;background:#12372e;color:white;border-radius:12px;padding:11px}.add{display:flex;gap:8px;margin-top:12px}.add button{white-space:nowrap}
+.shop{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}.item{background:#245246;border-radius:15px;padding:12px;text-align:center}.item .art{font-size:35px}.item p{font-size:.86rem;color:var(--muted);min-height:34px}.item button{width:100%}
+.note{font-size:.8rem;color:var(--muted);text-align:center;margin-top:18px}
+@media(max-width:480px){.island{height:235px}.tree{font-size:50px}.hut{font-size:54px}.monkeys{font-size:30px}.pill{padding:7px 10px}}
+</style>
+</head>
+<body>
+<header><div class="brand">🍌 Banana Island</div><div class="stats"><div class="pill">🍌 <span id="bananas">0</span></div><div class="pill">🔥 <span id="streak">0</span> day streak</div></div></header>
+<main>
+<div class="island"><div class="sun"></div><div class="cloud c1">☁️</div><div class="cloud c2">☁️</div><div class="island-label">Your island</div><div class="land"></div><div class="tree t1">🌴</div><div class="tree t2">🌴</div><div class="hut">🛖</div><div class="monkeys" id="monkeys">🐒</div></div>
+<section><h2>Today's habits</h2><div id="habitList"></div><div class="add"><input id="habitInput" maxlength="48" placeholder="Add a habit..."><button id="addBtn">Add</button></div><div class="note">Finish a habit to earn 10 bananas</div></section>
+<section><h2>Island shop</h2><div class="shop" id="shop"></div></section>
+<section><h2>Island progress</h2><div id="progress">Start completing habits to grow your island</div></section>
+<div class="note">Your progress saves on this device. Free island game made just for you.</div>
+</main>
+<script>
+const today=()=>new Date().toLocaleDateString('en-CA');
+const defaultHabits=[{id:1,name:"Drink water",emoji:"💧"},{id:2,name:"Read for 10 minutes",emoji:"📖"},{id:3,name:"Move your body",emoji:"🏃"}];
+let data=JSON.parse(localStorage.getItem("bananaIslandSave")||"null")||{bananas:0,habits:defaultHabits,done:{},items:[],streak:0,lastDay:"",total:0};
+const store=()=>localStorage.setItem("bananaIslandSave",JSON.stringify(data));
+const items=[{id:"flower",name:"Flower patch",emoji:"🌺",cost:25,desc:"Make your island bloom"},{id:"palm",name:"Extra palm tree",emoji:"🌴",cost:50,desc:"More island greenery"},{id:"hut",name:"Monkey hut",emoji:"🛖",cost:90,desc:"A cozy monkey home"},{id:"monkey",name:"New monkey",emoji:"🐒",cost:120,desc:"Invite a monkey friend"},{id:"boat",name:"Tiny boat",emoji:"⛵",cost:175,desc:"Explore the ocean"},{id:"castle",name:"Island palace",emoji:"🏰",cost:300,desc:"A legendary upgrade"}];
+function render(){
+ document.getElementById("bananas").textContent=data.bananas;document.getElementById("streak").textContent=data.streak;
+ let list=document.getElementById("habitList");list.innerHTML="";
+ data.habits.forEach(h=>{let done=data.done[today()]?.includes(h.id);let el=document.createElement("div");el.className="habit"+(done?" done":"");el.innerHTML=`<span class="emoji">${h.emoji||"⭐"}</span><div class="name">${escapeHtml(h.name)}<small>${done?"Completed today":"Daily habit"}</small></div><button ${done?"disabled":""}>${done?"Done ✓":"Complete +10"}</button><button class="delete" title="Remove habit">×</button>`;el.children[2].onclick=()=>complete(h.id);el.children[3].onclick=()=>{data.habits=data.habits.filter(x=>x.id!==h.id);store();render()};list.appendChild(el)});
+ let shop=document.getElementById("shop");shop.innerHTML="";items.forEach(it=>{let owned=data.items.includes(it.id);let el=document.createElement("div");el.className="item";el.innerHTML=`<div class="art">${it.emoji}</div><b>${it.name}</b><p>${it.desc}</p><button ${owned||data.bananas<it.cost?"disabled":""}>${owned?"Owned ✓":"🍌 "+it.cost}</button>`;el.querySelector("button").onclick=()=>buy(it);shop.appendChild(el)});
+ let extra=data.items.map(id=>items.find(x=>x.id===id)?.emoji).filter(Boolean).join(" ");document.getElementById("monkeys").textContent="🐒".repeat(1+data.items.filter(x=>x==="monkey").length);
+ document.querySelector(".island").querySelectorAll(".extra").forEach(x=>x.remove());let island=document.querySelector(".island");if(data.items.includes("flower")){let e=document.createElement("div");e.className="extra";e.style.cssText="position:absolute;bottom:37px;left:43%;font-size:28px";e.textContent="🌺🌼";island.append(e)}if(data.items.includes("boat")){let e=document.createElement("div");e.className="extra";e.style.cssText="position:absolute;bottom:10px;right:12%;font-size:38px";e.textContent="⛵";island.append(e)}if(data.items.includes("castle")){document.querySelector(".hut").textContent="🏰"}
+ document.getElementById("progress").textContent=`You completed ${data.total} habits and unlocked ${data.items.length} island upgrades. Keep going to build your paradise!`;
+}
+function complete(id){let d=today();data.done[d] ||= [];if(data.done[d].includes(id))return;data.done[d].push(id);data.bananas+=10;data.total++;if(data.lastDay!==d){let yesterday=new Date(Date.now()-86400000).toLocaleDateString("en-CA");data.streak=data.lastDay===yesterday?data.streak+1:1;data.lastDay=d}store();render()}
+function buy(it){if(data.bananas<it.cost||data.items.includes(it.id))return;data.bananas-=it.cost;data.items.push(it.id);store();render()}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+document.getElementById("addBtn").onclick=()=>{let name=document.getElementById("habitInput").value.trim();if(!name)return;data.habits.push({id:Date.now(),name,emoji:"⭐"});document.getElementById("habitInput").value="";store();render()};
+document.getElementById("habitInput").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("addBtn").click()});
+render();
+</script>
+</body>
+</html>
