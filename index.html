@@ -68,20 +68,6 @@ input{width:100%;border:1px solid #4b795e;background:#12372e;color:white;border-
 .area.locked{opacity:.55}
 .note{font-size:.8rem;color:var(--muted);text-align:center;margin-top:18px}
 
-/* Banana reward animation */
-.reward{
-position:fixed;
-z-index:100;
-pointer-events:none;
-font-size:28px;
-font-weight:900;
-animation:bananaFly 1.3s ease-out forwards;
-}
-@keyframes bananaFly{
-0%{opacity:0;transform:translateY(20px) scale(.5)}
-20%{opacity:1;transform:translateY(0) scale(1.2)}
-100%{opacity:0;transform:translateY(-100px) scale(1)}
-}
 .habit-pop{animation:habitPop .35s ease}
 @keyframes habitPop{
 50%{transform:scale(1.04)}
@@ -205,12 +191,27 @@ return [...areas].reverse().find(a=>level()>=a.level)||areas[0];
 
 function showReward(){
 const reward=document.createElement("div");
-reward.className="reward";
-reward.textContent="🍌 +10";
-reward.style.left=(window.innerWidth/2-30)+"px";
-reward.style.top=(window.innerHeight/2)+"px";
+reward.textContent="🍌 +10 BANANAS";
+reward.style.position="fixed";
+reward.style.left="50%";
+reward.style.top="45%";
+reward.style.transform="translate(-50%, -50%)";
+reward.style.zIndex="999999";
+reward.style.background="#c8f27b";
+reward.style.color="#163d35";
+reward.style.padding="18px";
+reward.style.borderRadius="20px";
+reward.style.fontSize="25px";
+reward.style.fontWeight="900";
+reward.style.boxShadow="0 0 30px #c8f27b";
+reward.style.textAlign="center";
+reward.style.pointerEvents="none";
+
 document.body.appendChild(reward);
-setTimeout(()=>reward.remove(),1400);
+
+setTimeout(()=>{
+reward.remove();
+},2000);
 }
 
 function render(){
