@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#163d35">
+<link rel="manifest" href="./manifest.json">
 <title>Banana Island</title>
 <style>
 :root{--bg:#102d29;--panel:#1b4439;--panel2:#245548;--cream:#fff3d7;--lime:#c8f27b;--gold:#ffd66b;--muted:#b8d2bd}
@@ -56,6 +57,11 @@ function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;","
 document.getElementById("addBtn").onclick=()=>{let name=document.getElementById("habitInput").value.trim();if(!name)return;data.habits.push({id:Date.now(),name,emoji:"⭐"});document.getElementById("habitInput").value="";store();render()};
 document.getElementById("habitInput").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("addBtn").click()});
 render();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js");
+}
 </script>
 </body>
 </html>
