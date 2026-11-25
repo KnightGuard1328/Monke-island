@@ -1,0 +1,16 @@
+{
+  "name": "Banana Island",
+  "short_name": "Banana Island",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#102d29",
+  "theme_color": "#163d35",
+  "description": "Build your island by completing daily habits",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
