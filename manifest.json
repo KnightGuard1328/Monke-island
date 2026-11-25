@@ -1,7 +1,7 @@
 {
   "name": "Monke Island",
   "short_name": "Monke Island",
-  "start_url": "./",
+  "start_url": "./?update=4",
   "display": "standalone",
   "background_color": "#102d29",
   "theme_color": "#163d35",
