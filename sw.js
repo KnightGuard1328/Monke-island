@@ -1,5 +1,11 @@
-const CACHE = "banana-island-v1";
-const FILES = ["./", "./index.html", "./manifest.json"];
+const CACHE = "banana-island-v2";
+
+const FILES = [
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./icon.png"
+];
 
 self.addEventListener("install", event => {
   event.waitUntil(
@@ -9,7 +15,15 @@ self.addEventListener("install", event => {
 });
 
 self.addEventListener("activate", event => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(key => key !== CACHE)
+          .map(key => caches.delete(key))
+      )
+    )
+  );
+  self.clients.claim();
 });
 
 self.addEventListener("fetch", event => {
