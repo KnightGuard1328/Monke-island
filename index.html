@@ -7,6 +7,17 @@
 <meta name="theme-color" content="#163d35">
 <link rel="manifest" href="./manifest.json">
 <title>Monke Island</title>
+
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+window.OneSignalDeferred = window.OneSignalDeferred || [];
+OneSignalDeferred.push(async function(OneSignal) {
+  await OneSignal.init({
+    appId: "7ca1a882-225b-4a9d-ac1d-3bb6e2d2878c",
+  });
+});
+</script>
+
 <style>
 :root{--panel:#1b4439;--cream:#fff3d7;--lime:#c8f27b;--muted:#b8d2bd}
 *{box-sizing:border-box}
